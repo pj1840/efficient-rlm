@@ -4,11 +4,12 @@ import json
 import os
 import time
 from dataclasses import dataclass
+from time import perf_counter
 from typing import Any
 from urllib import request
 from urllib.error import HTTPError, URLError
 
-from efficient_rlm.llm.base import LLMClient
+from efficient_rlm.llm.base import LLMClient, LLMResponse
 
 
 @dataclass(frozen=True)
@@ -28,6 +29,9 @@ class HTTPGenerationClient(LLMClient):
         self.config = config
 
     def generate(self, prompt: str) -> str:
+        return self.generate_response(prompt).text
+
+    def generate_response(self, prompt: str) -> LLMResponse:
         payload = self._build_payload(prompt)
         body = json.dumps(payload).encode("utf-8")
         headers = {"Content-Type": "application/json"}
@@ -37,10 +41,13 @@ class HTTPGenerationClient(LLMClient):
         last_error: Exception | None = None
         for attempt in range(self.config.max_retries + 1):
             try:
+                started = perf_counter()
                 req = request.Request(self.config.endpoint, data=body, headers=headers, method="POST")
                 with request.urlopen(req, timeout=self.config.timeout_seconds) as response:
+                    request_id = response.headers.get("x-request-id")
                     data = json.loads(response.read().decode("utf-8"))
-                return self._extract_text(data)
+                response = self._extract_response(data, perf_counter() - started, request_id)
+                return LLMResponse(**{**response.__dict__, "retries": attempt})
             except (HTTPError, URLError, TimeoutError, RuntimeError) as exc:
                 last_error = exc
                 if attempt < self.config.max_retries:
@@ -66,14 +73,44 @@ class HTTPGenerationClient(LLMClient):
             "stream": False,
         }
 
-    def _extract_text(self, data: dict[str, Any]) -> str:
+    def _extract_response(self, data: dict[str, Any], latency: float, request_id: str | None) -> LLMResponse:
         if self.config.provider == "ollama":
-            return str(data.get("response", "")).strip()
+            text = str(data.get("response", "")).strip()
+            prompt_tokens = data.get("prompt_eval_count")
+            completion_tokens = data.get("eval_count")
+            total_tokens = None
+            if isinstance(prompt_tokens, int) and isinstance(completion_tokens, int):
+                total_tokens = prompt_tokens + completion_tokens
+            return LLMResponse(
+                text=text,
+                model=self.config.model,
+                latency_seconds=latency,
+                prompt_tokens=prompt_tokens if isinstance(prompt_tokens, int) else None,
+                completion_tokens=completion_tokens if isinstance(completion_tokens, int) else None,
+                total_tokens=total_tokens,
+                finish_reason="done" if data.get("done") else None,
+                request_id=request_id,
+                provider=self.config.provider,
+                raw=data,
+            )
         try:
-            content = data["choices"][0]["message"]["content"]
+            choice = data["choices"][0]
+            content = choice["message"]["content"]
         except Exception as exc:
             raise RuntimeError(f"Could not parse model response: {data}") from exc
-        return str(content).strip()
+        usage = data.get("usage", {})
+        return LLMResponse(
+            text=str(content).strip(),
+            model=data.get("model") or self.config.model,
+            latency_seconds=latency,
+            prompt_tokens=usage.get("prompt_tokens"),
+            completion_tokens=usage.get("completion_tokens"),
+            total_tokens=usage.get("total_tokens"),
+            finish_reason=choice.get("finish_reason"),
+            request_id=request_id or data.get("id"),
+            provider=self.config.provider,
+            raw=data,
+        )
 
 
 def build_llm_client(config) -> LLMClient:

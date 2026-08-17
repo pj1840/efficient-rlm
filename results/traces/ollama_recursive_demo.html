@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Efficient RLM Trace 9f574a81734f</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 32px;
+      color: #17202a;
+    }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .metric { border: 1px solid #d8dee4; border-radius: 6px; padding: 10px; background: #f6f8fa; }
+    .metric strong { display: block; font-size: 12px; color: #57606a; margin-bottom: 4px; }
+    table { border-collapse: collapse; width: 100%; font-size: 13px; }
+    th, td { border: 1px solid #d8dee4; padding: 8px; vertical-align: top; }
+    th { background: #f6f8fa; text-align: left; }
+    tr[data-depth="1"] td:first-child { padding-left: 24px; }
+    tr[data-depth="2"] td:first-child { padding-left: 40px; }
+  </style>
+</head>
+<body>
+  <h1>Efficient RLM Trace</h1>
+  <p>Run ID: <code>9f574a81734f</code></p>
+  <section class="summary">
+    <div class="metric"><strong>Mode</strong>threaded</div>
+    <div class="metric"><strong>Calls</strong>5</div>
+    <div class="metric"><strong>Tasks</strong>6</div>
+    <div class="metric"><strong>Max depth</strong>2</div>
+    <div class="metric"><strong>Wall time</strong>18.6326s</div>
+    <div class="metric"><strong>Total tokens</strong>959</div>
+  </section>
+  <table>
+    <thead>
+      <tr>
+        <th>Node</th><th>Parent</th><th>Depth</th><th>Status</th><th>Latency</th>
+        <th>Tokens</th><th>Provider</th><th>Model</th><th>Stop reason</th><th>Aggregation</th><th>Task</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-depth="0"><td>root</td><td></td><td>0</td><td>aggregated</td><td>18.6324s</td><td></td><td></td><td></td><td></td><td>pairwise_merge</td><td><details><summary>preview</summary>Artificial intelligence is transforming healthcare by improving diagnostics, speeding up medical imaging analysis, and h...</details></td></tr><tr data-depth="1"><td>root.0</td><td>root</td><td>1</td><td>completed</td><td>3.6904s</td><td>175</td><td>ollama</td><td>qwen2.5-coder:7b</td><td>chunk_size_words=45</td><td></td><td><details><summary>preview</summary>Artificial intelligence is transforming healthcare by improving diagnostics, speeding up medical imaging analysis, and h...</details></td></tr><tr data-depth="1"><td>root.1</td><td>root</td><td>1</td><td>completed</td><td>6.5263s</td><td>167</td><td>ollama</td><td>qwen2.5-coder:7b</td><td>chunk_size_words=45</td><td></td><td><details><summary>preview</summary>surroundings, make decisions, and adapt to dynamic environments. At the same time, AI systems raise concerns about priva...</details></td></tr><tr data-depth="1"><td>root.2</td><td>root</td><td>1</td><td>completed</td><td>3.3722s</td><td>75</td><td>ollama</td><td>qwen2.5-coder:7b</td><td>min_chunk_words=15</td><td></td><td><details><summary>preview</summary>control, and supply chain optimization.</details></td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

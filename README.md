@@ -1,120 +1,147 @@
-# Efficient Recursive Language Models via Parallel Execution and Curriculum-Aware Scheduling
+# Efficient RLM
 
-Efficient RLM is a Python framework for recursively decomposing long-context summarization tasks into bounded subproblems, executing independent LLM subcalls sequentially or concurrently, and recursively aggregating intermediate outputs into a final response.
+**Adaptive and Parallel Recursive Inference for Language Models**
 
-The repository is designed as an engineering-focused implementation of recursive LLM orchestration. It runs out of the box with a deterministic mock provider, so installation, tests, demos, and local benchmarks do not require paid API calls.
+Efficient RLM is a Python framework for studying when recursive decomposition improves language-model output quality enough to justify its additional inference cost. It decomposes synthesis tasks into bounded subproblems, executes independent subcalls sequentially, with `ThreadPoolExecutor`, or with bounded asyncio concurrency, and recursively aggregates partial outputs with traceable metrics.
 
-## Overview
-
-The canonical implementation lives in `src/efficient_rlm`. It currently supports recursive summarization with:
-
-- word-based chunk decomposition
-- sequential and thread-based parallel execution modes
-- recursive pairwise aggregation
-- explicit recursion and call-budget controls
-- optional inference-time curriculum-aware scheduling
-- mock, Ollama, and OpenAI-compatible HTTP providers
-
-## Motivation
-
-Large-context LLM tasks are often easier to orchestrate when the input is split into smaller independent units. Recursive decomposition lets the system process bounded chunks, summarize or transform each one, and merge partial outputs into a final answer.
-
-Parallel execution matters when subcalls are independent and I/O-bound. Remote LLM inference and local HTTP model servers often spend most wall-clock time waiting on model responses, so concurrent subcalls can reduce latency in real-provider settings. This project does not claim Python threads accelerate CPU-bound model inference.
-
-## Architecture
-
-Actual implemented flow:
+## What I Built
 
 ```text
-Input text
+Input task
   |
   v
 RecursivePipeline
   |
-  +--> stopping / budget checks
+  +--> RecursivePolicy: answer directly, decompose, or stop
+  +--> Budget checks: calls, depth, wall time, prompt/completion/total tokens
   |
   v
-Word chunk decomposition
+Decomposer: fixed chunks or semantic JSON decomposition
   |
   v
-Curriculum-aware ordering (optional)
+Optional inference-time curriculum-aware ordering
   |
-  +------------------------------+
-  |                              |
-Sequential executor      Parallel executor
-                                 |
-                         ThreadPoolExecutor
-  |                              |
-  +--------------+---------------+
+  +----------------+----------------+----------------+
+  |                |                |                |
+Sequential      Threaded          Async
+executor        executor          executor
+                 |                semaphore + timeout
+                 |                retries + cancellation
+  +--------------+----------------+----------------+
                  |
                  v
-          Partial summaries
+          Partial responses
                  |
                  v
        Recursive pairwise merge
                  |
                  v
-       Final response + metrics
+   Final answer + metrics + trace JSON/HTML
 ```
 
-The archived prototypes explored a REPL-driven recursive model scaffold. The public implementation uses an explicit pipeline because it is easier to test, safer to run locally, and clearer for reproducible benchmarking.
+Implemented systems components:
 
-## Key Features
+- recursive summarization/synthesis with deterministic stopping limits
+- fixed and semantic decomposition
+- dependency-aware subtask scheduling
+- sequential, threaded, and bounded asyncio execution
+- provider abstraction for mock, Ollama, and OpenAI-compatible endpoints
+- call, latency, recursion-depth, retry, token, and budget accounting
+- repeated benchmark runner with raw records and descriptive aggregates
+- execution traces rendered as text, Mermaid, and self-contained HTML
+- deterministic reference evaluation with required-fact coverage
 
-- Recursive summarization pipeline with bounded word chunks.
-- Sequential mode for deterministic baseline runs.
-- Parallel mode implemented with `concurrent.futures.ThreadPoolExecutor`.
-- Deterministic result ordering even when parallel workers finish out of order.
-- Recursion controls: `max_depth`, `min_chunk_words`, `max_children`.
-- Budget controls: `max_calls`, `workers`, `timeout_seconds`.
-- Provider abstraction behind a small `generate(prompt)` interface.
-- Mock provider for tests and demos without network access.
-- Optional coarse-to-detailed recursive inference.
-- JSON benchmark output for sequential vs parallel comparisons.
+## Real-Model Evaluation
 
-## Parallel Execution
+The checked-in real benchmark uses the only local model available during validation: `qwen2.5-coder:7b` through Ollama. This is a code-specialized model used because it was already installed locally; these results are not universal behavior for general-purpose instruction models.
 
-Parallel mode uses Python threads through `ThreadPoolExecutor`. This is appropriate for I/O-bound LLM calls, where the process is often waiting for a local server or remote API response.
+Benchmark artifact:
 
-The executor preserves original chunk order:
+`results/benchmarks/ollama_qwen2_5_coder_7b_repeated.json`
 
-1. each chunk receives a stable index,
-2. workers may complete in any order,
-3. results are written back by index,
-4. aggregation receives the same order in sequential and parallel modes.
+Configuration summary:
 
-The current mock provider responds immediately, so local mock benchmarks usually show parallel mode as slower due to thread-management overhead. That is expected and is not evidence against real-provider parallelism.
+- 4 synthetic benchmark tasks
+- 5 repetitions per task/mode
+- 100 timed raw records
+- one untimed Ollama warmup request, excluded from aggregates
+- modes: `direct`, `sequential`, `threaded`, `async`, `adaptive`
+- workers: `2`
+- chunk size: `90` words
+- max depth: `2`
+- max generated tokens per call: `160`
 
-## Curriculum-Aware Scheduling
+Aggregate repeated results:
 
-This project implements curriculum-aware scheduling, not curriculum learning.
+| Mode | Mean latency ± sd (s) | Median latency (s) | Mean calls | Mean tokens ± sd | Mean fact coverage ± sd | Speedup vs sequential |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| direct | 4.48 ± 2.27 | 3.47 | 1.0 | 276.05 ± 55.17 | 0.442 ± 0.338 | 3.147x |
+| sequential | 14.09 ± 5.10 | 15.24 | 3.5 | 692.55 ± 273.82 | 0.542 ± 0.324 | 1.000x |
+| threaded | 16.31 ± 8.03 | 15.62 | 3.5 | 701.05 ± 302.51 | 0.567 ± 0.329 | 0.863x |
+| async | 17.48 ± 9.01 | 15.11 | 3.5 | 697.75 ± 293.23 | 0.517 ± 0.305 | 0.806x |
+| adaptive | 17.93 ± 8.62 | 16.95 | 3.5 | 710.10 ± 290.89 | 0.560 ± 0.329 | 0.785x |
 
-The optional scheduler orders inference-time subtasks from shorter chunks to longer chunks, then restores original order before aggregation. The CLI also supports a coarse-to-detailed recursive summarization pass: first a coarse pass, then a guided detailed pass, then final refinement.
+Primary finding: on this local Qwen2.5-Coder 7B benchmark, recursive execution sometimes improved fact coverage, especially on the largest distributed synthesis task, but it required substantially more model calls, tokens, and wall-clock time. Threaded and async execution did not outperform sequential execution because the local Ollama runtime remained the dominant bottleneck.
 
-No model parameters are trained. There is no fine-tuning, learned scheduler, or claim of curriculum-training improvement.
+The strongest positive result was `long_context_summary`: direct fact coverage averaged `0.25`, while recursive modes reached `0.675` to `0.775`. The strongest negative result was `multi_section_synthesis`: direct already reached `1.0` fact coverage, so recursive modes added calls, tokens, and latency without a quality benefit.
 
-## Recursion and Budget Safety
+## Execution Trace
 
-The recursive pipeline has explicit controls:
+Polished real trace demo:
 
-- `max_depth`: maximum decomposition depth
-- `chunk_size_words`: target chunk size
-- `min_chunk_words`: terminal threshold for small inputs
-- `max_children`: maximum fan-out per decomposition step
-- `max_calls`: maximum total LLM calls
-- `timeout_seconds`: request and executor timeout setting
+- `results/traces/ollama_recursive_demo.json`
+- `results/traces/ollama_recursive_demo.html`
 
-Malformed or unexpectedly long inputs cannot create unbounded decomposition because fan-out, depth, and call count are all bounded.
+The trace captures the recursive tree, node status, latency, model metadata, token counts, stopping reasons, child ordering, aggregation state, and output previews. Open the HTML file directly in a browser.
 
-## Provider Abstraction
+Render traces yourself:
 
-Available providers:
+```bash
+python -m efficient_rlm trace results/traces/ollama_recursive_demo.json
+python -m efficient_rlm trace results/traces/ollama_recursive_demo.json --mermaid
+python scripts/render_trace_html.py \
+  results/traces/ollama_recursive_demo.json \
+  --output results/traces/ollama_recursive_demo.html
+```
 
-- `mock`: deterministic local provider, no network or credentials required
-- `ollama`: optional local Ollama HTTP generation endpoint
-- `openai_compatible`: optional chat-completions-style HTTP endpoint
+## Execution Modes
 
-API keys are read from environment variables only. The default key variable is `RLM_API_KEY`. Importing `efficient_rlm` does not require credentials.
+- `direct`: one provider call; benchmark baseline.
+- `sequential`: recursive decomposition with one subtask at a time.
+- `threaded`: recursive decomposition using `ThreadPoolExecutor`.
+- `async`: bounded `asyncio` concurrency with semaphore, timeout, retries, backoff, cancellation cleanup, and `asyncio.to_thread` around synchronous provider calls.
+- `adaptive`: recursive execution using heuristic adaptive policy decisions.
+- `adaptive_scheduled`: adaptive execution plus inference-time curriculum-aware scheduling and coarse-to-detailed summarization.
+
+Threads and asyncio are useful for I/O-bound provider calls. This project does not claim Python threads accelerate CPU-bound model inference.
+
+## Decomposition and Scheduling
+
+The decomposer interface supports:
+
+- `fixed`: deterministic word chunks; reliable fallback and default.
+- `semantic`: asks the configured provider for JSON subproblems with IDs, prompts, context slices, estimated difficulty, and dependency IDs.
+
+Malformed semantic output falls back to fixed chunking by default. Dependencies are enforced: missing IDs, self-dependencies, duplicate IDs, and cycles are rejected, and valid dependent subtasks wait for prerequisites.
+
+Curriculum-aware scheduling here means inference-time ordering, usually shorter/easier chunks first. It is not curriculum learning, model training, fine-tuning, or learned scheduling.
+
+## Budgets and Safety
+
+Hard controls include:
+
+- `max_depth`
+- `max_calls`
+- `max_wall_time_seconds`
+- `max_prompt_tokens`
+- `max_completion_tokens`
+- `max_total_tokens`
+- `chunk_size_words`
+- `min_chunk_words`
+- `max_children`
+- per-request timeout and retries
+
+Call count and estimated prompt tokens are reserved before a request starts, which prevents concurrent workers from all passing a stale budget check. Completion tokens and provider-reported actual totals are only known after responses return, so in-flight requests can create bounded overshoot for those post-hoc token limits.
 
 ## Installation
 
@@ -124,65 +151,70 @@ source .venv/bin/activate
 pip install -e .
 ```
 
-For development, the standard-library `unittest` suite is sufficient. No runtime dependency is required for the mock provider.
+Development checks:
+
+```bash
+pip install -e ".[dev]"
+```
 
 ## Quick Start
 
 ```bash
-python -m efficient_rlm run \
-  --input-file examples/sample_context.txt \
-  --mode parallel \
-  --workers 4
-```
+python -m efficient_rlm run --input-file examples/sample_context.txt
 
-Run with curriculum-aware scheduling and coarse-to-detailed inference:
-
-```bash
-python -m efficient_rlm run \
+efficient-rlm run \
   --input-file examples/sample_context.txt \
-  --mode parallel \
+  --mode async \
   --workers 4 \
-  --curriculum
+  --policy adaptive \
+  --trace results/traces/example.json
 ```
 
 ## CLI Usage
 
-Show help:
-
 ```bash
-python -m efficient_rlm --help
-python -m efficient_rlm run --help
-python -m efficient_rlm benchmark --help
+efficient-rlm --help
+efficient-rlm run --help
+efficient-rlm benchmark --help
 ```
 
-Sequential run:
+Common flags:
+
+- `--provider mock|ollama|openai_compatible`
+- `--model <model-name>`
+- `--endpoint <provider-url>`
+- `--mode sequential|threaded|parallel|async`
+- `--workers <n>`
+- `--decomposer fixed|semantic`
+- `--policy deterministic|adaptive`
+- `--chunk-size-words <n>`
+- `--max-depth <n>`
+- `--max-calls <n>`
+- `--max-tokens <n>`
+- `--timeout-seconds <seconds>`
+- `--repetitions <n>`
+- `--warmup` / `--no-warmup`
+- `--curriculum`
+
+## Provider Support
+
+Mock provider, no network:
 
 ```bash
-python -m efficient_rlm run \
-  --input-file examples/sample_context.txt \
-  --mode sequential
+python -m efficient_rlm run --input-file examples/sample_context.txt --provider mock
 ```
 
-Parallel run:
-
-```bash
-python -m efficient_rlm run \
-  --input-file examples/sample_context.txt \
-  --mode parallel \
-  --workers 4
-```
-
-Ollama run:
+Ollama:
 
 ```bash
 python -m efficient_rlm run \
   --provider ollama \
-  --model qwen2.5-coder:7b \
+  --model <local-ollama-model> \
   --endpoint http://localhost:11434/api/generate \
   --input-file examples/sample_context.txt
 ```
 
-OpenAI-compatible endpoint:
+OpenAI-compatible HTTP endpoint:
 
 ```bash
 export RLM_API_KEY=replace-with-real-key
@@ -193,79 +225,105 @@ python -m efficient_rlm run \
   --input-file examples/sample_context.txt
 ```
 
-## Benchmarking
+API keys are read from environment variables only. Importing the package does not require credentials.
+
+## Reproduce Benchmarks
+
+Mock benchmark:
 
 ```bash
 python -m efficient_rlm benchmark \
-  --input-file examples/sample_context.txt \
-  --output results/mock_comparison.json
+  --suite benchmarks/core/tasks.json \
+  --modes direct,sequential,threaded,async,adaptive,adaptive_scheduled \
+  --repetitions 1 \
+  --output results/benchmarks/mock_core.json
 ```
 
-The benchmark records:
+Repeated Ollama benchmark:
 
-- final answer
-- execution mode
-- model-call count
-- task count
-- maximum depth reached
-- wall-clock runtime
-- computed speedup
+```bash
+python -m efficient_rlm benchmark \
+  --provider ollama \
+  --model qwen2.5-coder:7b \
+  --suite benchmarks/core/tasks.json \
+  --modes direct,sequential,threaded,async,adaptive \
+  --repetitions 5 \
+  --workers 2 \
+  --chunk-size-words 90 \
+  --max-depth 2 \
+  --max-calls 16 \
+  --max-tokens 160 \
+  --timeout-seconds 120 \
+  --output results/benchmarks/ollama_qwen2_5_coder_7b_repeated.json
+```
+
+Generate charts:
+
+```bash
+python scripts/plot_benchmarks.py \
+  results/benchmarks/ollama_qwen2_5_coder_7b_repeated.json \
+  --out-dir results/figures/ollama_qwen2_5_coder_7b_repeated
+```
+
+Optional future general-purpose model run, after you install a suitable Ollama model yourself:
+
+```bash
+ollama pull qwen2.5:7b-instruct
+python -m efficient_rlm benchmark \
+  --provider ollama \
+  --model qwen2.5:7b-instruct \
+  --suite benchmarks/core/tasks.json \
+  --modes direct,sequential,threaded,async,adaptive \
+  --repetitions 5 \
+  --workers 2 \
+  --chunk-size-words 90 \
+  --max-depth 2 \
+  --max-calls 16 \
+  --max-tokens 160 \
+  --timeout-seconds 120 \
+  --output results/benchmarks/ollama_qwen2_5_7b_instruct_repeated.json
+```
+
+Do not compare those future results to the checked-in Qwen2.5-Coder run unless the model, hardware, runtime, and benchmark configuration are documented.
 
 ## Project Structure
 
 ```text
-configs/                 Default runtime configuration
-examples/                Sample input text
-results/                 Small reproducible benchmark artifacts
-src/efficient_rlm/        Canonical Python package
-  llm/                    Provider interface and HTTP/mock clients
-  recursive/              Decomposition, execution, aggregation, stopping, pipeline
-  scheduling/             Curriculum-aware inference scheduler
-  evaluation/             Benchmark runner and metrics
-tests/                   Standard-library unittest suite
+benchmarks/core/tasks.json                 Synthetic benchmark suite
+configs/default.yaml                       Default runtime configuration
+docs/architecture.md                       Technical design document
+docs/benchmark_methodology.md              Experiment methodology
+examples/sample_context.txt                Demo input
+scripts/plot_benchmarks.py                 Benchmark chart generation
+scripts/render_trace_html.py               Static trace HTML renderer
+src/efficient_rlm/config.py                Runtime configuration
+src/efficient_rlm/llm/                     Provider interface and clients
+src/efficient_rlm/recursive/decomposers.py Fixed and semantic decomposition
+src/efficient_rlm/recursive/policy.py      Deterministic/adaptive policies
+src/efficient_rlm/recursive/executor.py    Sequential/threaded/async execution
+src/efficient_rlm/recursive/pipeline.py    Recursive controller
+src/efficient_rlm/tracing.py               Trace JSON and text/Mermaid renderers
+src/efficient_rlm/evaluation/              Benchmarks and evaluation
+tests/                                     Unit and regression tests
 ```
 
-Local historical prototypes are kept under `archive/` but excluded from Git.
-
-## Testing
+## Testing and CI
 
 ```bash
+ruff check .
 python -m unittest discover -s tests -v
 python -m compileall -q src tests
 ```
 
-The tests use the mock provider only. They do not call paid APIs or require network access.
-
-## Current Results
-
-`results/mock_comparison.json` is the only checked-in benchmark artifact.
-
-Latest checked-in mock run on `examples/sample_context.txt`:
-
-| Mode | Calls | Tasks | Max depth | Runtime |
-| --- | ---: | ---: | ---: | ---: |
-| Sequential | 5 | 6 | 2 | ~0.0001416 s |
-| Parallel | 5 | 6 | 2 | ~0.0005710 s |
-
-Mock speedup: ~0.2480x.
-
-This does not show real LLM latency improvement. It measures local orchestration overhead with an instant mock backend. Because the mock provider returns immediately, thread overhead makes parallel mode slower. The benchmark infrastructure is intended for future real-provider latency comparisons.
+Normal tests use deterministic fake providers. They do not require network access, paid APIs, or Ollama. GitHub Actions CI runs the mock/fake-provider checks only.
 
 ## Limitations
 
-- The canonical pipeline currently implements summarization only.
-- Decomposition is word-count based, not semantic.
-- Parallelism is thread-based and intended for I/O-bound subcalls.
-- There is no genuine curriculum learning, fine-tuning, or learned scheduling.
-- There is no answer-quality evaluator.
-- Provider token accounting is not implemented.
-- The implementation is not a production sandbox for arbitrary model-generated code.
-
-## Future Work
-
-- Add semantic decomposition strategies.
-- Add quality evaluation datasets and scoring.
-- Add rate-limit-aware async execution.
-- Add provider usage/token accounting when APIs expose it.
-- Add richer task types beyond summarization.
-- Revisit a sandboxed REPL mode only with strict execution controls.
+- The main implemented task type is summarization/synthesis.
+- The benchmark suite is synthetic and small.
+- The real benchmark uses a code-specialized local model because it was already installed.
+- Required-fact coverage is deterministic and auditable, but it is not a full measure of answer faithfulness or usefulness.
+- LLM-as-judge support is optional and should not be treated as objective truth.
+- Completion-token and actual-total-token budgets can only be checked after in-flight requests return.
+- The repeated Ollama benchmark did not show parallel speedup.
+- No model training, fine-tuning, learned scheduler, or genuine curriculum learning is implemented.

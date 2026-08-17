@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="540" viewBox="0 0 980 540">
+<rect width="100%" height="100%" fill="white"/>
+<text x="490.0" y="32.0" text-anchor="middle" font-size="18">Per-Task Fact Coverage</text>
+<text x="28.0" y="270.0" text-anchor="middle" font-size="13">fact coverage</text>
+<line x1="86" y1="454" x2="894" y2="454" stroke="#333"/>
+<line x1="86" y1="86" x2="86" y2="454" stroke="#333"/>
+<rect x="91.8" y="316.0" width="29.1" height="138.0" fill="#4C78A8"/>
+<rect x="132.2" y="316.0" width="29.1" height="138.0" fill="#59A14F"/>
+<rect x="172.6" y="325.2" width="29.1" height="128.8" fill="#F28E2B"/>
+<rect x="213.0" y="316.0" width="29.1" height="138.0" fill="#E15759"/>
+<rect x="253.4" y="316.0" width="29.1" height="138.0" fill="#B07AA1"/>
+<text x="187.0" y="496.0" text-anchor="middle" font-size="10">hierarchical aggregation</text>
+<rect x="293.8" y="196.4" width="29.1" height="257.6" fill="#4C78A8"/>
+<rect x="334.2" y="196.4" width="29.1" height="257.6" fill="#59A14F"/>
+<rect x="374.6" y="362.0" width="29.1" height="92.0" fill="#F28E2B"/>
+<rect x="415.0" y="205.6" width="29.1" height="248.4" fill="#E15759"/>
+<rect x="455.4" y="168.8" width="29.1" height="285.2" fill="#B07AA1"/>
+<text x="389.0" y="496.0" text-anchor="middle" font-size="10">long context summary</text>
+<rect x="495.8" y="86.0" width="29.1" height="368.0" fill="#4C78A8"/>
+<rect x="536.2" y="150.4" width="29.1" height="303.6" fill="#59A14F"/>
+<rect x="576.6" y="86.0" width="29.1" height="368.0" fill="#F28E2B"/>
+<rect x="617.0" y="104.4" width="29.1" height="349.6" fill="#E15759"/>
+<rect x="657.4" y="104.4" width="29.1" height="349.6" fill="#B07AA1"/>
+<text x="591.0" y="496.0" text-anchor="middle" font-size="10">multi section synthesis</text>
+<rect x="697.8" y="392.7" width="29.1" height="61.3" fill="#4C78A8"/>
+<rect x="738.2" y="392.7" width="29.1" height="61.3" fill="#59A14F"/>
+<rect x="778.6" y="392.7" width="29.1" height="61.3" fill="#F28E2B"/>
+<rect x="819.0" y="392.7" width="29.1" height="61.3" fill="#E15759"/>
+<rect x="859.4" y="392.7" width="29.1" height="61.3" fill="#B07AA1"/>
+<text x="793.0" y="496.0" text-anchor="middle" font-size="10">synthetic multidoc qa</text>
+<rect x="86.0" y="512.0" width="10" height="10" fill="#4C78A8"/>
+<text x="102.0" y="522.0" text-anchor="start" font-size="11">adaptive</text>
+<rect x="211.0" y="512.0" width="10" height="10" fill="#59A14F"/>
+<text x="227.0" y="522.0" text-anchor="start" font-size="11">async</text>
+<rect x="336.0" y="512.0" width="10" height="10" fill="#F28E2B"/>
+<text x="352.0" y="522.0" text-anchor="start" font-size="11">direct</text>
+<rect x="461.0" y="512.0" width="10" height="10" fill="#E15759"/>
+<text x="477.0" y="522.0" text-anchor="start" font-size="11">sequential</text>
+<rect x="586.0" y="512.0" width="10" height="10" fill="#B07AA1"/>
+<text x="602.0" y="522.0" text-anchor="start" font-size="11">threaded</text>
+</svg>

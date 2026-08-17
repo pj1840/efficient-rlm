@@ -63,7 +63,7 @@ class RecursivePipelineTests(unittest.TestCase):
         config = RLMConfig(execution_mode="parallel", workers=4, chunk_size_words=20, max_depth=3)
         result = RecursivePipeline(MockLLMClient(), config).run(sample_text())
         self.assertTrue(result.answer)
-        self.assertEqual(result.mode, "parallel")
+        self.assertEqual(result.mode, "threaded")
         self.assertGreater(result.calls, 1)
         self.assertGreater(result.tasks, 1)
 

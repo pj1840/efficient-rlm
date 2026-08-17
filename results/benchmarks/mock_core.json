@@ -1,0 +1,1895 @@
+{
+  "schema_version": "2.0",
+  "created_at": "2026-08-17T05:40:17.447203+00:00",
+  "suite": "benchmarks/core/tasks.json",
+  "modes": [
+    "direct",
+    "sequential",
+    "threaded",
+    "async",
+    "adaptive",
+    "adaptive_scheduled"
+  ],
+  "repetitions": 1,
+  "benchmark_config": {
+    "provider": "mock",
+    "model": "mock-rlm",
+    "temperature": 0.2,
+    "max_tokens": 800,
+    "timeout_seconds": 60,
+    "max_retries": 1,
+    "decomposer": "fixed",
+    "policy": "deterministic",
+    "chunk_size_words": 45,
+    "min_chunk_words": 15,
+    "max_depth": 3,
+    "max_children": 16,
+    "max_calls": 128,
+    "max_wall_time_seconds": null,
+    "max_prompt_tokens": null,
+    "max_completion_tokens": null,
+    "max_total_tokens": null,
+    "complexity_threshold_words": 120,
+    "workers": 4
+  },
+  "warmup": {
+    "performed": false,
+    "included_in_aggregates": false
+  },
+  "records": [
+    {
+      "task_id": "long_context_summary",
+      "category": "multi-section summarization",
+      "description": "Summarize a synthetic multi-domain AI adoption brief with facts distributed across sections.",
+      "input_word_count": 198,
+      "mode": "direct",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "direct",
+        "calls": 1,
+        "successful_calls": 1,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 1,
+        "max_depth_reached": 0,
+        "wall_time_seconds": 3.754100180231035e-05,
+        "prompt_tokens": 218,
+        "completion_tokens": 45,
+        "total_tokens": 263,
+        "decomposition_count": 0,
+        "aggregation_count": 0,
+        "budget_termination_reason": null
+      },
+      "answer": "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final...",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 0.25,
+        "details": {
+          "found": [
+            "healthcare",
+            "privacy"
+          ],
+          "missing": [
+            "finance",
+            "robotics",
+            "education",
+            "manufacturing",
+            "fairness",
+            "human oversight"
+          ],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "long_context_summary",
+      "category": "multi-section summarization",
+      "description": "Summarize a synthetic multi-domain AI adoption brief with facts distributed across sections.",
+      "input_word_count": 198,
+      "mode": "sequential",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "sequential",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "sequential",
+        "calls": 9,
+        "successful_calls": 9,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 10,
+        "max_depth_reached": 3,
+        "wall_time_seconds": 0.0002343340020161122,
+        "prompt_tokens": 968,
+        "completion_tokens": 756,
+        "total_tokens": 1724,
+        "decomposition_count": 1,
+        "aggregation_count": 4,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final",
+          "decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use",
+          "AI to perceive surroundings, plan movements, and adapt to changing work cells. The benefit is flexible automation, while the risk is unsafe behavior if perception or planning fails. Section 4 - Education: tutoring teams use AI to personalize practice, support instructors, and automate administrative work.",
+          "The benefit is faster feedback, while the risk is unfair outcomes if students receive uneven guidance. Section 5 - Manufacturing: operations teams use AI for predictive maintenance, visual quality control, demand forecasting, and supply-chain monitoring. The benefit is less downtime, while the risk is over-reliance",
+          "on models when sensors drift. Cross-cutting note: all deployments require privacy controls, fairness reviews, accountability, and human oversight."
+        ]
+      },
+      "answer": "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use AI to perceive surroundings, plan movements, and adapt to changing work cells. The benefit is flexible automation, while the risk is unsafe behavior if perception or planning fails. Section 4 - Education: tutoring teams use AI to personalize practice, support instructors, and automate administrative work. The benefit is faster feedback, while the risk is unfair outcomes if students receive uneven guidance. Section 5 - Manufacturing: operations teams use AI for predictive maintenance, visual quality control, demand forecasting, and supply-chain monitoring. The benefit is less downtime, while the risk is over-reliance on models when sensors drift. Cross-cutting note: all deployments require privacy controls, fairness reviews, accountability, and human oversight.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "healthcare",
+            "finance",
+            "robotics",
+            "education",
+            "manufacturing",
+            "privacy",
+            "fairness",
+            "human oversight"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "long_context_summary",
+      "category": "multi-section summarization",
+      "description": "Summarize a synthetic multi-domain AI adoption brief with facts distributed across sections.",
+      "input_word_count": 198,
+      "mode": "threaded",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "threaded",
+        "calls": 9,
+        "successful_calls": 9,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 10,
+        "max_depth_reached": 3,
+        "wall_time_seconds": 0.0005140829889569432,
+        "prompt_tokens": 968,
+        "completion_tokens": 756,
+        "total_tokens": 1724,
+        "decomposition_count": 1,
+        "aggregation_count": 4,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final",
+          "decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use",
+          "AI to perceive surroundings, plan movements, and adapt to changing work cells. The benefit is flexible automation, while the risk is unsafe behavior if perception or planning fails. Section 4 - Education: tutoring teams use AI to personalize practice, support instructors, and automate administrative work.",
+          "The benefit is faster feedback, while the risk is unfair outcomes if students receive uneven guidance. Section 5 - Manufacturing: operations teams use AI for predictive maintenance, visual quality control, demand forecasting, and supply-chain monitoring. The benefit is less downtime, while the risk is over-reliance",
+          "on models when sensors drift. Cross-cutting note: all deployments require privacy controls, fairness reviews, accountability, and human oversight."
+        ]
+      },
+      "answer": "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use AI to perceive surroundings, plan movements, and adapt to changing work cells. The benefit is flexible automation, while the risk is unsafe behavior if perception or planning fails. Section 4 - Education: tutoring teams use AI to personalize practice, support instructors, and automate administrative work. The benefit is faster feedback, while the risk is unfair outcomes if students receive uneven guidance. Section 5 - Manufacturing: operations teams use AI for predictive maintenance, visual quality control, demand forecasting, and supply-chain monitoring. The benefit is less downtime, while the risk is over-reliance on models when sensors drift. Cross-cutting note: all deployments require privacy controls, fairness reviews, accountability, and human oversight.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "healthcare",
+            "finance",
+            "robotics",
+            "education",
+            "manufacturing",
+            "privacy",
+            "fairness",
+            "human oversight"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "long_context_summary",
+      "category": "multi-section summarization",
+      "description": "Summarize a synthetic multi-domain AI adoption brief with facts distributed across sections.",
+      "input_word_count": 198,
+      "mode": "async",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "async",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "async",
+        "calls": 9,
+        "successful_calls": 9,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 10,
+        "max_depth_reached": 3,
+        "wall_time_seconds": 0.0013115830079186708,
+        "prompt_tokens": 968,
+        "completion_tokens": 756,
+        "total_tokens": 1724,
+        "decomposition_count": 1,
+        "aggregation_count": 4,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final",
+          "decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use",
+          "AI to perceive surroundings, plan movements, and adapt to changing work cells. The benefit is flexible automation, while the risk is unsafe behavior if perception or planning fails. Section 4 - Education: tutoring teams use AI to personalize practice, support instructors, and automate administrative work.",
+          "The benefit is faster feedback, while the risk is unfair outcomes if students receive uneven guidance. Section 5 - Manufacturing: operations teams use AI for predictive maintenance, visual quality control, demand forecasting, and supply-chain monitoring. The benefit is less downtime, while the risk is over-reliance",
+          "on models when sensors drift. Cross-cutting note: all deployments require privacy controls, fairness reviews, accountability, and human oversight."
+        ]
+      },
+      "answer": "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use AI to perceive surroundings, plan movements, and adapt to changing work cells. The benefit is flexible automation, while the risk is unsafe behavior if perception or planning fails. Section 4 - Education: tutoring teams use AI to personalize practice, support instructors, and automate administrative work. The benefit is faster feedback, while the risk is unfair outcomes if students receive uneven guidance. Section 5 - Manufacturing: operations teams use AI for predictive maintenance, visual quality control, demand forecasting, and supply-chain monitoring. The benefit is less downtime, while the risk is over-reliance on models when sensors drift. Cross-cutting note: all deployments require privacy controls, fairness reviews, accountability, and human oversight.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "healthcare",
+            "finance",
+            "robotics",
+            "education",
+            "manufacturing",
+            "privacy",
+            "fairness",
+            "human oversight"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "long_context_summary",
+      "category": "multi-section summarization",
+      "description": "Summarize a synthetic multi-domain AI adoption brief with facts distributed across sections.",
+      "input_word_count": 198,
+      "mode": "adaptive",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "adaptive",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "adaptive",
+        "calls": 9,
+        "successful_calls": 9,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 10,
+        "max_depth_reached": 3,
+        "wall_time_seconds": 0.0003777499950956553,
+        "prompt_tokens": 968,
+        "completion_tokens": 756,
+        "total_tokens": 1724,
+        "decomposition_count": 1,
+        "aggregation_count": 4,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final",
+          "decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use",
+          "AI to perceive surroundings, plan movements, and adapt to changing work cells. The benefit is flexible automation, while the risk is unsafe behavior if perception or planning fails. Section 4 - Education: tutoring teams use AI to personalize practice, support instructors, and automate administrative work.",
+          "The benefit is faster feedback, while the risk is unfair outcomes if students receive uneven guidance. Section 5 - Manufacturing: operations teams use AI for predictive maintenance, visual quality control, demand forecasting, and supply-chain monitoring. The benefit is less downtime, while the risk is over-reliance",
+          "on models when sensors drift. Cross-cutting note: all deployments require privacy controls, fairness reviews, accountability, and human oversight."
+        ]
+      },
+      "answer": "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use AI to perceive surroundings, plan movements, and adapt to changing work cells. The benefit is flexible automation, while the risk is unsafe behavior if perception or planning fails. Section 4 - Education: tutoring teams use AI to personalize practice, support instructors, and automate administrative work. The benefit is faster feedback, while the risk is unfair outcomes if students receive uneven guidance. Section 5 - Manufacturing: operations teams use AI for predictive maintenance, visual quality control, demand forecasting, and supply-chain monitoring. The benefit is less downtime, while the risk is over-reliance on models when sensors drift. Cross-cutting note: all deployments require privacy controls, fairness reviews, accountability, and human oversight.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "healthcare",
+            "finance",
+            "robotics",
+            "education",
+            "manufacturing",
+            "privacy",
+            "fairness",
+            "human oversight"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "long_context_summary",
+      "category": "multi-section summarization",
+      "description": "Summarize a synthetic multi-domain AI adoption brief with facts distributed across sections.",
+      "input_word_count": 198,
+      "mode": "adaptive_scheduled",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "adaptive",
+        "execution_mode": "threaded",
+        "enable_curriculum": true,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "adaptive_scheduled",
+        "calls": 11,
+        "successful_calls": 11,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 10,
+        "max_depth_reached": 3,
+        "wall_time_seconds": 0.00044916599290445447,
+        "prompt_tokens": 1700,
+        "completion_tokens": 891,
+        "total_tokens": 2591,
+        "decomposition_count": 1,
+        "aggregation_count": 4,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final...",
+          "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final",
+          "decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use",
+          "AI to perceive surroundings, plan movements, and adapt to changing work cells. The benefit is flexible automation, while the risk is unsafe behavior if perception or planning fails. Section 4 - Education: tutoring teams use AI to personalize practice, support instructors, and automate administrative work.",
+          "The benefit is faster feedback, while the risk is unfair outcomes if students receive uneven guidance. Section 5 - Manufacturing: operations teams use AI for predictive maintenance, visual quality control, demand forecasting, and supply-chain monitoring. The benefit is less downtime, while the risk is over-reliance",
+          "on models when sensors drift. Cross-cutting note: all deployments require privacy controls, fairness reviews, accountability, and human oversight.",
+          "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use AI to perceive surroundings, plan movements, and adapt to changing work cells. The benefit is flexible automation, while the risk is unsafe behavior if perception or planning fails. Section 4 - Education: tutoring teams use AI to personalize practice, support instructors, and automate administrative work. The benefit is faster feedback, while the risk is unfair outcomes if students receive uneven guidance. Section 5 - Manufacturing: operations teams use AI for predictive maintenance, visual quality control, demand forecasting, and supply-chain monitoring. The benefit is less downtime, while the risk is over-reliance on models when sensors drift. Cross-cutting note: all deployments require privacy controls, fairness reviews, accountability, and human oversight."
+        ]
+      },
+      "answer": "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use...",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 0.5,
+        "details": {
+          "found": [
+            "healthcare",
+            "finance",
+            "robotics",
+            "privacy"
+          ],
+          "missing": [
+            "education",
+            "manufacturing",
+            "fairness",
+            "human oversight"
+          ],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "multi_section_synthesis",
+      "category": "multi-section information synthesis",
+      "description": "Synthesize an engineering status report with implementation, product, evaluation, risk, and operations sections.",
+      "input_word_count": 95,
+      "mode": "direct",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "direct",
+        "calls": 1,
+        "successful_calls": 1,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 1,
+        "max_depth_reached": 0,
+        "wall_time_seconds": 1.3707991456612945e-05,
+        "prompt_tokens": 115,
+        "completion_tokens": 45,
+        "total_tokens": 160,
+        "decomposition_count": 0,
+        "aggregation_count": 0,
+        "budget_termination_reason": null
+      },
+      "answer": "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped....",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 0.375,
+        "details": {
+          "found": [
+            "deterministic output ordering",
+            "dependency validation",
+            "clearer traces"
+          ],
+          "missing": [
+            "mock benchmarks",
+            "real model latency",
+            "rate limits",
+            "token budgets",
+            "Ollama"
+          ],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "multi_section_synthesis",
+      "category": "multi-section information synthesis",
+      "description": "Synthesize an engineering status report with implementation, product, evaluation, risk, and operations sections.",
+      "input_word_count": 95,
+      "mode": "sequential",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "sequential",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "sequential",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 8.56249826028943e-05,
+        "prompt_tokens": 396,
+        "completion_tokens": 280,
+        "total_tokens": 676,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped.",
+          "Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on",
+          "which model is already installed."
+        ]
+      },
+      "answer": "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped. Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on which model is already installed.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "deterministic output ordering",
+            "dependency validation",
+            "clearer traces",
+            "mock benchmarks",
+            "real model latency",
+            "rate limits",
+            "token budgets",
+            "Ollama"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "multi_section_synthesis",
+      "category": "multi-section information synthesis",
+      "description": "Synthesize an engineering status report with implementation, product, evaluation, risk, and operations sections.",
+      "input_word_count": 95,
+      "mode": "threaded",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "threaded",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.00017766599194146693,
+        "prompt_tokens": 396,
+        "completion_tokens": 280,
+        "total_tokens": 676,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped.",
+          "Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on",
+          "which model is already installed."
+        ]
+      },
+      "answer": "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped. Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on which model is already installed.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "deterministic output ordering",
+            "dependency validation",
+            "clearer traces",
+            "mock benchmarks",
+            "real model latency",
+            "rate limits",
+            "token budgets",
+            "Ollama"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "multi_section_synthesis",
+      "category": "multi-section information synthesis",
+      "description": "Synthesize an engineering status report with implementation, product, evaluation, risk, and operations sections.",
+      "input_word_count": 95,
+      "mode": "async",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "async",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "async",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.0005247500084806234,
+        "prompt_tokens": 396,
+        "completion_tokens": 280,
+        "total_tokens": 676,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped.",
+          "Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on",
+          "which model is already installed."
+        ]
+      },
+      "answer": "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped. Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on which model is already installed.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "deterministic output ordering",
+            "dependency validation",
+            "clearer traces",
+            "mock benchmarks",
+            "real model latency",
+            "rate limits",
+            "token budgets",
+            "Ollama"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "multi_section_synthesis",
+      "category": "multi-section information synthesis",
+      "description": "Synthesize an engineering status report with implementation, product, evaluation, risk, and operations sections.",
+      "input_word_count": 95,
+      "mode": "adaptive",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "adaptive",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "adaptive",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.00022104202071204782,
+        "prompt_tokens": 396,
+        "completion_tokens": 280,
+        "total_tokens": 676,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped.",
+          "Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on",
+          "which model is already installed."
+        ]
+      },
+      "answer": "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped. Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on which model is already installed.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "deterministic output ordering",
+            "dependency validation",
+            "clearer traces",
+            "mock benchmarks",
+            "real model latency",
+            "rate limits",
+            "token budgets",
+            "Ollama"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "multi_section_synthesis",
+      "category": "multi-section information synthesis",
+      "description": "Synthesize an engineering status report with implementation, product, evaluation, risk, and operations sections.",
+      "input_word_count": 95,
+      "mode": "adaptive_scheduled",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "adaptive",
+        "execution_mode": "threaded",
+        "enable_curriculum": true,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "adaptive_scheduled",
+        "calls": 7,
+        "successful_calls": 7,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.00023787500686012208,
+        "prompt_tokens": 822,
+        "completion_tokens": 415,
+        "total_tokens": 1237,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped....",
+          "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped.",
+          "Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on",
+          "which model is already installed.",
+          "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped. Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on which model is already installed."
+        ]
+      },
+      "answer": "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped. Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on...",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "deterministic output ordering",
+            "dependency validation",
+            "clearer traces",
+            "mock benchmarks",
+            "real model latency",
+            "rate limits",
+            "token budgets",
+            "Ollama"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "synthetic_multidoc_qa",
+      "category": "multi-document style QA",
+      "description": "Answer a synthetic multi-document question with ground-truth facts.",
+      "input_word_count": 100,
+      "mode": "direct",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "direct",
+        "calls": 1,
+        "successful_calls": 1,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 1,
+        "max_depth_reached": 0,
+        "wall_time_seconds": 1.3542012311518192e-05,
+        "prompt_tokens": 120,
+        "completion_tokens": 45,
+        "total_tokens": 165,
+        "decomposition_count": 0,
+        "aggregation_count": 0,
+        "budget_termination_reason": null
+      },
+      "answer": "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C:...",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 0.6666666666666666,
+        "details": {
+          "found": [
+            "Alpha",
+            "no network access",
+            "Beta",
+            "prompt and completion token counts"
+          ],
+          "missing": [
+            "Gamma",
+            "RLM_API_KEY"
+          ],
+          "total_facts": 6
+        }
+      }
+    },
+    {
+      "task_id": "synthetic_multidoc_qa",
+      "category": "multi-document style QA",
+      "description": "Answer a synthetic multi-document question with ground-truth facts.",
+      "input_word_count": 100,
+      "mode": "sequential",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "sequential",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "sequential",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 8.241698378697038e-05,
+        "prompt_tokens": 406,
+        "completion_tokens": 290,
+        "total_tokens": 696,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C:",
+          "The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network",
+          "access, and which deployment may report prompt and completion tokens?"
+        ]
+      },
+      "answer": "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C: The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network access, and which deployment may report prompt and completion tokens?",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "Gamma",
+            "RLM_API_KEY",
+            "Alpha",
+            "no network access",
+            "Beta",
+            "prompt and completion token counts"
+          ],
+          "missing": [],
+          "total_facts": 6
+        }
+      }
+    },
+    {
+      "task_id": "synthetic_multidoc_qa",
+      "category": "multi-document style QA",
+      "description": "Answer a synthetic multi-document question with ground-truth facts.",
+      "input_word_count": 100,
+      "mode": "threaded",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "threaded",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.0001928750134538859,
+        "prompt_tokens": 406,
+        "completion_tokens": 290,
+        "total_tokens": 696,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C:",
+          "The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network",
+          "access, and which deployment may report prompt and completion tokens?"
+        ]
+      },
+      "answer": "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C: The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network access, and which deployment may report prompt and completion tokens?",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "Gamma",
+            "RLM_API_KEY",
+            "Alpha",
+            "no network access",
+            "Beta",
+            "prompt and completion token counts"
+          ],
+          "missing": [],
+          "total_facts": 6
+        }
+      }
+    },
+    {
+      "task_id": "synthetic_multidoc_qa",
+      "category": "multi-document style QA",
+      "description": "Answer a synthetic multi-document question with ground-truth facts.",
+      "input_word_count": 100,
+      "mode": "async",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "async",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "async",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.0005172920064069331,
+        "prompt_tokens": 406,
+        "completion_tokens": 290,
+        "total_tokens": 696,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C:",
+          "The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network",
+          "access, and which deployment may report prompt and completion tokens?"
+        ]
+      },
+      "answer": "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C: The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network access, and which deployment may report prompt and completion tokens?",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "Gamma",
+            "RLM_API_KEY",
+            "Alpha",
+            "no network access",
+            "Beta",
+            "prompt and completion token counts"
+          ],
+          "missing": [],
+          "total_facts": 6
+        }
+      }
+    },
+    {
+      "task_id": "synthetic_multidoc_qa",
+      "category": "multi-document style QA",
+      "description": "Answer a synthetic multi-document question with ground-truth facts.",
+      "input_word_count": 100,
+      "mode": "adaptive",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "adaptive",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "adaptive",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.00018125001224689186,
+        "prompt_tokens": 406,
+        "completion_tokens": 290,
+        "total_tokens": 696,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C:",
+          "The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network",
+          "access, and which deployment may report prompt and completion tokens?"
+        ]
+      },
+      "answer": "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C: The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network access, and which deployment may report prompt and completion tokens?",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "Gamma",
+            "RLM_API_KEY",
+            "Alpha",
+            "no network access",
+            "Beta",
+            "prompt and completion token counts"
+          ],
+          "missing": [],
+          "total_facts": 6
+        }
+      }
+    },
+    {
+      "task_id": "synthetic_multidoc_qa",
+      "category": "multi-document style QA",
+      "description": "Answer a synthetic multi-document question with ground-truth facts.",
+      "input_word_count": 100,
+      "mode": "adaptive_scheduled",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "adaptive",
+        "execution_mode": "threaded",
+        "enable_curriculum": true,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "adaptive_scheduled",
+        "calls": 7,
+        "successful_calls": 7,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.00022983300732448697,
+        "prompt_tokens": 842,
+        "completion_tokens": 425,
+        "total_tokens": 1267,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C:...",
+          "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C:",
+          "The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network",
+          "access, and which deployment may report prompt and completion tokens?",
+          "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C: The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network access, and which deployment may report prompt and completion tokens?"
+        ]
+      },
+      "answer": "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C: The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network...",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "Gamma",
+            "RLM_API_KEY",
+            "Alpha",
+            "no network access",
+            "Beta",
+            "prompt and completion token counts"
+          ],
+          "missing": [],
+          "total_facts": 6
+        }
+      }
+    },
+    {
+      "task_id": "hierarchical_aggregation",
+      "category": "hierarchical reasoning and aggregation",
+      "description": "Aggregate distributed project observations into one technical summary.",
+      "input_word_count": 98,
+      "mode": "direct",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "direct",
+        "calls": 1,
+        "successful_calls": 1,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 1,
+        "max_depth_reached": 0,
+        "wall_time_seconds": 1.3082986697554588e-05,
+        "prompt_tokens": 118,
+        "completion_tokens": 45,
+        "total_tokens": 163,
+        "decomposition_count": 0,
+        "aggregation_count": 0,
+        "budget_termination_reason": null
+      },
+      "answer": "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution...",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 0.5,
+        "details": {
+          "found": [
+            "fixed chunking",
+            "semantic decomposition",
+            "malformed JSON",
+            "async execution"
+          ],
+          "missing": [
+            "network-bound throughput",
+            "dependency-aware scheduling",
+            "cycles",
+            "traces"
+          ],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "hierarchical_aggregation",
+      "category": "hierarchical reasoning and aggregation",
+      "description": "Aggregate distributed project observations into one technical summary.",
+      "input_word_count": 98,
+      "mode": "sequential",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "sequential",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "sequential",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 8.22500151116401e-05,
+        "prompt_tokens": 402,
+        "completion_tokens": 286,
+        "total_tokens": 688,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution",
+          "can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving",
+          "node status, latency, tokens, errors, and stopping reasons."
+        ]
+      },
+      "answer": "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving node status, latency, tokens, errors, and stopping reasons.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "fixed chunking",
+            "semantic decomposition",
+            "malformed JSON",
+            "async execution",
+            "network-bound throughput",
+            "dependency-aware scheduling",
+            "cycles",
+            "traces"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "hierarchical_aggregation",
+      "category": "hierarchical reasoning and aggregation",
+      "description": "Aggregate distributed project observations into one technical summary.",
+      "input_word_count": 98,
+      "mode": "threaded",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "threaded",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.00018104101764038205,
+        "prompt_tokens": 402,
+        "completion_tokens": 286,
+        "total_tokens": 688,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution",
+          "can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving",
+          "node status, latency, tokens, errors, and stopping reasons."
+        ]
+      },
+      "answer": "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving node status, latency, tokens, errors, and stopping reasons.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "fixed chunking",
+            "semantic decomposition",
+            "malformed JSON",
+            "async execution",
+            "network-bound throughput",
+            "dependency-aware scheduling",
+            "cycles",
+            "traces"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "hierarchical_aggregation",
+      "category": "hierarchical reasoning and aggregation",
+      "description": "Aggregate distributed project observations into one technical summary.",
+      "input_word_count": 98,
+      "mode": "async",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "deterministic",
+        "execution_mode": "async",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "async",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.000475957989692688,
+        "prompt_tokens": 402,
+        "completion_tokens": 286,
+        "total_tokens": 688,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution",
+          "can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving",
+          "node status, latency, tokens, errors, and stopping reasons."
+        ]
+      },
+      "answer": "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving node status, latency, tokens, errors, and stopping reasons.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "fixed chunking",
+            "semantic decomposition",
+            "malformed JSON",
+            "async execution",
+            "network-bound throughput",
+            "dependency-aware scheduling",
+            "cycles",
+            "traces"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "hierarchical_aggregation",
+      "category": "hierarchical reasoning and aggregation",
+      "description": "Aggregate distributed project observations into one technical summary.",
+      "input_word_count": 98,
+      "mode": "adaptive",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "adaptive",
+        "execution_mode": "threaded",
+        "enable_curriculum": false,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "adaptive",
+        "calls": 5,
+        "successful_calls": 5,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.00019483300275169313,
+        "prompt_tokens": 402,
+        "completion_tokens": 286,
+        "total_tokens": 688,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution",
+          "can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving",
+          "node status, latency, tokens, errors, and stopping reasons."
+        ]
+      },
+      "answer": "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving node status, latency, tokens, errors, and stopping reasons.",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "fixed chunking",
+            "semantic decomposition",
+            "malformed JSON",
+            "async execution",
+            "network-bound throughput",
+            "dependency-aware scheduling",
+            "cycles",
+            "traces"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    },
+    {
+      "task_id": "hierarchical_aggregation",
+      "category": "hierarchical reasoning and aggregation",
+      "description": "Aggregate distributed project observations into one technical summary.",
+      "input_word_count": 98,
+      "mode": "adaptive_scheduled",
+      "repetition": 1,
+      "config": {
+        "provider": "mock",
+        "model": "mock-rlm",
+        "decomposer": "fixed",
+        "policy": "adaptive",
+        "execution_mode": "threaded",
+        "enable_curriculum": true,
+        "workers": 4
+      },
+      "metrics": {
+        "mode": "adaptive_scheduled",
+        "calls": 7,
+        "successful_calls": 7,
+        "failed_calls": 0,
+        "retries": 0,
+        "tasks": 6,
+        "max_depth_reached": 2,
+        "wall_time_seconds": 0.00024270801804959774,
+        "prompt_tokens": 834,
+        "completion_tokens": 421,
+        "total_tokens": 1255,
+        "decomposition_count": 1,
+        "aggregation_count": 2,
+        "budget_termination_reason": null,
+        "trace_path": null,
+        "intermediate_results": [
+          "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution...",
+          "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution",
+          "can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving",
+          "node status, latency, tokens, errors, and stopping reasons.",
+          "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving node status, latency, tokens, errors, and stopping reasons."
+        ]
+      },
+      "answer": "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving...",
+      "evaluation": {
+        "method": "required_fact_coverage",
+        "score": 1.0,
+        "details": {
+          "found": [
+            "fixed chunking",
+            "semantic decomposition",
+            "malformed JSON",
+            "async execution",
+            "network-bound throughput",
+            "dependency-aware scheduling",
+            "cycles",
+            "traces"
+          ],
+          "missing": [],
+          "total_facts": 8
+        }
+      }
+    }
+  ],
+  "aggregates": {
+    "by_mode": {
+      "adaptive": {
+        "runs": 4,
+        "failures": 0,
+        "latency_seconds": {
+          "mean": 0.00024371875770157203,
+          "median": 0.00020793751173187047,
+          "stdev": 9.086761101291336e-05,
+          "min": 0.00018125001224689186,
+          "max": 0.0003777499950956553
+        },
+        "fact_coverage": {
+          "mean": 1.0,
+          "stdev": 0.0
+        },
+        "total_tokens": {
+          "mean": 946.0,
+          "median": 692.0,
+          "stdev": 518.7317868288646,
+          "min": 676.0,
+          "max": 1724.0
+        },
+        "calls": {
+          "mean": 6.0
+        },
+        "speedup_vs_sequential": 0.49711600790185206
+      },
+      "adaptive_scheduled": {
+        "runs": 4,
+        "failures": 0,
+        "latency_seconds": {
+          "mean": 0.0002898955062846653,
+          "median": 0.0002402915124548599,
+          "stdev": 0.0001063130332175684,
+          "min": 0.00022983300732448697,
+          "max": 0.00044916599290445447
+        },
+        "fact_coverage": {
+          "mean": 0.875,
+          "stdev": 0.25
+        },
+        "total_tokens": {
+          "mean": 1587.5,
+          "median": 1261.0,
+          "stdev": 669.1135927478981,
+          "min": 1237.0,
+          "max": 2591.0
+        },
+        "calls": {
+          "mean": 8.0
+        },
+        "speedup_vs_sequential": 0.41793161071090773
+      },
+      "async": {
+        "runs": 4,
+        "failures": 0,
+        "latency_seconds": {
+          "mean": 0.0007073957531247288,
+          "median": 0.0005210210074437782,
+          "stdev": 0.0004033627729272202,
+          "min": 0.000475957989692688,
+          "max": 0.0013115830079186708
+        },
+        "fact_coverage": {
+          "mean": 1.0,
+          "stdev": 0.0
+        },
+        "total_tokens": {
+          "mean": 946.0,
+          "median": 692.0,
+          "stdev": 518.7317868288646,
+          "min": 676.0,
+          "max": 1724.0
+        },
+        "calls": {
+          "mean": 6.0
+        },
+        "speedup_vs_sequential": 0.17127116659130098
+      },
+      "direct": {
+        "runs": 4,
+        "failures": 0,
+        "latency_seconds": {
+          "mean": 1.9468498066999018e-05,
+          "median": 1.3625001884065568e-05,
+          "stdev": 1.205123529671495e-05,
+          "min": 1.3082986697554588e-05,
+          "max": 3.754100180231035e-05
+        },
+        "fact_coverage": {
+          "mean": 0.44791666666666663,
+          "stdev": 0.17800007802744855
+        },
+        "total_tokens": {
+          "mean": 187.75,
+          "median": 164.0,
+          "stdev": 50.20873098044469,
+          "min": 160.0,
+          "max": 263.0
+        },
+        "calls": {
+          "mean": 1.0
+        },
+        "speedup_vs_sequential": 6.223207124784638
+      },
+      "sequential": {
+        "runs": 4,
+        "failures": 0,
+        "latency_seconds": {
+          "mean": 0.00012115649587940425,
+          "median": 8.402098319493234e-05,
+          "stdev": 7.546765394069082e-05,
+          "min": 8.22500151116401e-05,
+          "max": 0.0002343340020161122
+        },
+        "fact_coverage": {
+          "mean": 1.0,
+          "stdev": 0.0
+        },
+        "total_tokens": {
+          "mean": 946.0,
+          "median": 692.0,
+          "stdev": 518.7317868288646,
+          "min": 676.0,
+          "max": 1724.0
+        },
+        "calls": {
+          "mean": 6.0
+        },
+        "speedup_vs_sequential": 1.0
+      },
+      "threaded": {
+        "runs": 4,
+        "failures": 0,
+        "latency_seconds": {
+          "mean": 0.0002664162529981695,
+          "median": 0.00018695801554713398,
+          "stdev": 0.0001652398919391774,
+          "min": 0.00017766599194146693,
+          "max": 0.0005140829889569432
+        },
+        "fact_coverage": {
+          "mean": 1.0,
+          "stdev": 0.0
+        },
+        "total_tokens": {
+          "mean": 946.0,
+          "median": 692.0,
+          "stdev": 518.7317868288646,
+          "min": 676.0,
+          "max": 1724.0
+        },
+        "calls": {
+          "mean": 6.0
+        },
+        "speedup_vs_sequential": 0.4547639061654271
+      }
+    },
+    "by_task_mode": [
+      {
+        "task_id": "hierarchical_aggregation",
+        "mode": "adaptive",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 98,
+        "latency_mean_seconds": 0.00019483300275169313,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 688.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.5,
+        "fact_coverage_per_1000_tokens": 1.4534883720930234
+      },
+      {
+        "task_id": "hierarchical_aggregation",
+        "mode": "adaptive_scheduled",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 98,
+        "latency_mean_seconds": 0.00024270801804959774,
+        "calls_mean": 7.0,
+        "total_tokens_mean": 1255.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.5,
+        "fact_coverage_per_1000_tokens": 0.7968127490039841
+      },
+      {
+        "task_id": "hierarchical_aggregation",
+        "mode": "async",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 98,
+        "latency_mean_seconds": 0.000475957989692688,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 688.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.5,
+        "fact_coverage_per_1000_tokens": 1.4534883720930234
+      },
+      {
+        "task_id": "hierarchical_aggregation",
+        "mode": "direct",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 98,
+        "latency_mean_seconds": 1.3082986697554588e-05,
+        "calls_mean": 1.0,
+        "total_tokens_mean": 163.0,
+        "fact_coverage_mean": 0.5,
+        "fact_coverage_gain_vs_direct": 0.0,
+        "fact_coverage_per_1000_tokens": 3.067484662576687
+      },
+      {
+        "task_id": "hierarchical_aggregation",
+        "mode": "sequential",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 98,
+        "latency_mean_seconds": 8.22500151116401e-05,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 688.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.5,
+        "fact_coverage_per_1000_tokens": 1.4534883720930234
+      },
+      {
+        "task_id": "hierarchical_aggregation",
+        "mode": "threaded",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 98,
+        "latency_mean_seconds": 0.00018104101764038205,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 688.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.5,
+        "fact_coverage_per_1000_tokens": 1.4534883720930234
+      },
+      {
+        "task_id": "long_context_summary",
+        "mode": "adaptive",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 198,
+        "latency_mean_seconds": 0.0003777499950956553,
+        "calls_mean": 9.0,
+        "total_tokens_mean": 1724.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.75,
+        "fact_coverage_per_1000_tokens": 0.580046403712297
+      },
+      {
+        "task_id": "long_context_summary",
+        "mode": "adaptive_scheduled",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 198,
+        "latency_mean_seconds": 0.00044916599290445447,
+        "calls_mean": 11.0,
+        "total_tokens_mean": 2591.0,
+        "fact_coverage_mean": 0.5,
+        "fact_coverage_gain_vs_direct": 0.25,
+        "fact_coverage_per_1000_tokens": 0.19297568506368196
+      },
+      {
+        "task_id": "long_context_summary",
+        "mode": "async",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 198,
+        "latency_mean_seconds": 0.0013115830079186708,
+        "calls_mean": 9.0,
+        "total_tokens_mean": 1724.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.75,
+        "fact_coverage_per_1000_tokens": 0.580046403712297
+      },
+      {
+        "task_id": "long_context_summary",
+        "mode": "direct",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 198,
+        "latency_mean_seconds": 3.754100180231035e-05,
+        "calls_mean": 1.0,
+        "total_tokens_mean": 263.0,
+        "fact_coverage_mean": 0.25,
+        "fact_coverage_gain_vs_direct": 0.0,
+        "fact_coverage_per_1000_tokens": 0.9505703422053231
+      },
+      {
+        "task_id": "long_context_summary",
+        "mode": "sequential",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 198,
+        "latency_mean_seconds": 0.0002343340020161122,
+        "calls_mean": 9.0,
+        "total_tokens_mean": 1724.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.75,
+        "fact_coverage_per_1000_tokens": 0.580046403712297
+      },
+      {
+        "task_id": "long_context_summary",
+        "mode": "threaded",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 198,
+        "latency_mean_seconds": 0.0005140829889569432,
+        "calls_mean": 9.0,
+        "total_tokens_mean": 1724.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.75,
+        "fact_coverage_per_1000_tokens": 0.580046403712297
+      },
+      {
+        "task_id": "multi_section_synthesis",
+        "mode": "adaptive",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 95,
+        "latency_mean_seconds": 0.00022104202071204782,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 676.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.625,
+        "fact_coverage_per_1000_tokens": 1.4792899408284024
+      },
+      {
+        "task_id": "multi_section_synthesis",
+        "mode": "adaptive_scheduled",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 95,
+        "latency_mean_seconds": 0.00023787500686012208,
+        "calls_mean": 7.0,
+        "total_tokens_mean": 1237.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.625,
+        "fact_coverage_per_1000_tokens": 0.8084074373484236
+      },
+      {
+        "task_id": "multi_section_synthesis",
+        "mode": "async",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 95,
+        "latency_mean_seconds": 0.0005247500084806234,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 676.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.625,
+        "fact_coverage_per_1000_tokens": 1.4792899408284024
+      },
+      {
+        "task_id": "multi_section_synthesis",
+        "mode": "direct",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 95,
+        "latency_mean_seconds": 1.3707991456612945e-05,
+        "calls_mean": 1.0,
+        "total_tokens_mean": 160.0,
+        "fact_coverage_mean": 0.375,
+        "fact_coverage_gain_vs_direct": 0.0,
+        "fact_coverage_per_1000_tokens": 2.34375
+      },
+      {
+        "task_id": "multi_section_synthesis",
+        "mode": "sequential",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 95,
+        "latency_mean_seconds": 8.56249826028943e-05,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 676.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.625,
+        "fact_coverage_per_1000_tokens": 1.4792899408284024
+      },
+      {
+        "task_id": "multi_section_synthesis",
+        "mode": "threaded",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 95,
+        "latency_mean_seconds": 0.00017766599194146693,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 676.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.625,
+        "fact_coverage_per_1000_tokens": 1.4792899408284024
+      },
+      {
+        "task_id": "synthetic_multidoc_qa",
+        "mode": "adaptive",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 100,
+        "latency_mean_seconds": 0.00018125001224689186,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 696.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.33333333333333337,
+        "fact_coverage_per_1000_tokens": 1.4367816091954024
+      },
+      {
+        "task_id": "synthetic_multidoc_qa",
+        "mode": "adaptive_scheduled",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 100,
+        "latency_mean_seconds": 0.00022983300732448697,
+        "calls_mean": 7.0,
+        "total_tokens_mean": 1267.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.33333333333333337,
+        "fact_coverage_per_1000_tokens": 0.7892659826361484
+      },
+      {
+        "task_id": "synthetic_multidoc_qa",
+        "mode": "async",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 100,
+        "latency_mean_seconds": 0.0005172920064069331,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 696.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.33333333333333337,
+        "fact_coverage_per_1000_tokens": 1.4367816091954024
+      },
+      {
+        "task_id": "synthetic_multidoc_qa",
+        "mode": "direct",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 100,
+        "latency_mean_seconds": 1.3542012311518192e-05,
+        "calls_mean": 1.0,
+        "total_tokens_mean": 165.0,
+        "fact_coverage_mean": 0.6666666666666666,
+        "fact_coverage_gain_vs_direct": 0.0,
+        "fact_coverage_per_1000_tokens": 4.04040404040404
+      },
+      {
+        "task_id": "synthetic_multidoc_qa",
+        "mode": "sequential",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 100,
+        "latency_mean_seconds": 8.241698378697038e-05,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 696.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.33333333333333337,
+        "fact_coverage_per_1000_tokens": 1.4367816091954024
+      },
+      {
+        "task_id": "synthetic_multidoc_qa",
+        "mode": "threaded",
+        "runs": 1,
+        "failures": 0,
+        "input_word_count": 100,
+        "latency_mean_seconds": 0.0001928750134538859,
+        "calls_mean": 5.0,
+        "total_tokens_mean": 696.0,
+        "fact_coverage_mean": 1.0,
+        "fact_coverage_gain_vs_direct": 0.33333333333333337,
+        "fact_coverage_per_1000_tokens": 1.4367816091954024
+      }
+    ]
+  },
+  "note": "Mock-provider results measure orchestration and deterministic reference metrics only."
+}

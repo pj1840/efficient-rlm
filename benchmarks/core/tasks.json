@@ -1,0 +1,42 @@
+[
+  {
+    "task_id": "long_context_summary",
+    "category": "multi-section summarization",
+    "description": "Summarize a synthetic multi-domain AI adoption brief with facts distributed across sections.",
+    "input": "Section 1 - Healthcare: clinical teams use AI to assist diagnosis, inspect medical images, prioritize triage, and find patterns in large patient datasets. The strongest operational benefit is faster review of routine cases, but deployments must protect patient privacy and keep clinicians responsible for final decisions. Section 2 - Finance: risk teams use AI for fraud detection, customer-support routing, market-abuse surveillance, and portfolio risk analysis. The benefit is faster anomaly detection, while the concern is explainability when automated systems flag customers or trades. Section 3 - Robotics: factory robots use AI to perceive surroundings, plan movements, and adapt to changing work cells. The benefit is flexible automation, while the risk is unsafe behavior if perception or planning fails. Section 4 - Education: tutoring teams use AI to personalize practice, support instructors, and automate administrative work. The benefit is faster feedback, while the risk is unfair outcomes if students receive uneven guidance. Section 5 - Manufacturing: operations teams use AI for predictive maintenance, visual quality control, demand forecasting, and supply-chain monitoring. The benefit is less downtime, while the risk is over-reliance on models when sensors drift. Cross-cutting note: all deployments require privacy controls, fairness reviews, accountability, and human oversight.",
+    "reference": "AI is applied across healthcare, finance, robotics, education, and manufacturing, creating efficiency gains while raising privacy, fairness, accountability, and human oversight concerns.",
+    "evaluation": "required_fact_coverage",
+    "required_facts": ["healthcare", "finance", "robotics", "education", "manufacturing", "privacy", "fairness", "human oversight"],
+    "keywords": ["healthcare", "finance", "robotics", "education", "manufacturing", "privacy", "fairness", "oversight"]
+  },
+  {
+    "task_id": "multi_section_synthesis",
+    "category": "multi-section information synthesis",
+    "description": "Synthesize an engineering status report with implementation, product, evaluation, risk, and operations sections.",
+    "input": "Engineering: the recursive executor now supports sequential, threaded, and async runs with deterministic output ordering. Engineering also added dependency validation so dependent subtasks wait for prerequisites. Product: users need clearer traces to understand how subproblems were processed, where retries happened, and why a node stopped. Evaluation: mock benchmarks are reproducible and useful for orchestration checks, but they do not represent real model latency. Risk: provider rate limits, wall-clock limits, and token budgets must be visible to avoid runaway calls. Operations: local Ollama runs are useful for validation but depend on which model is already installed.",
+    "reference": "The project has deterministic recursive execution, dependency validation, trace observability, mock-only benchmark limitations, and visible rate-limit and token-budget controls.",
+    "evaluation": "required_fact_coverage",
+    "required_facts": ["deterministic output ordering", "dependency validation", "clearer traces", "mock benchmarks", "real model latency", "rate limits", "token budgets", "Ollama"],
+    "keywords": ["deterministic", "traces", "mock", "latency", "rate", "token", "budget"]
+  },
+  {
+    "task_id": "synthetic_multidoc_qa",
+    "category": "multi-document style QA",
+    "description": "Answer a synthetic multi-document question with ground-truth facts.",
+    "input": "Document A: The Alpha deployment uses a mock provider for local tests, requires no network access, and records deterministic call counts. Document B: The Beta deployment uses Ollama locally, talks to the localhost generate endpoint, and may expose prompt and completion token counts. Document C: The Gamma deployment uses an OpenAI-compatible endpoint and requires credentials from the environment variable RLM_API_KEY. Document D: The Delta deployment is only a trace-rendering demo and does not call a model. Question: Which deployment requires environment credentials, which deployment is best for tests without network access, and which deployment may report prompt and completion tokens?",
+    "reference": "Gamma requires environment credentials, Alpha is best for tests without network access, and Beta may report prompt and completion token counts.",
+    "evaluation": "required_fact_coverage",
+    "required_facts": ["Gamma", "RLM_API_KEY", "Alpha", "no network access", "Beta", "prompt and completion token counts"],
+    "keywords": ["Gamma", "credentials", "Alpha", "tests", "network"]
+  },
+  {
+    "task_id": "hierarchical_aggregation",
+    "category": "hierarchical reasoning and aggregation",
+    "description": "Aggregate distributed project observations into one technical summary.",
+    "input": "Observation 1: fixed chunking is deterministic and easy to test, but it may split related facts across arbitrary word boundaries. Observation 2: semantic decomposition can produce better task boundaries but depends on model output quality and must handle malformed JSON safely. Observation 3: async execution can improve network-bound throughput when independent subtasks exist, but it adds cancellation, retry, and timeout complexity. Observation 4: dependency-aware scheduling prevents dependent semantic subtasks from running before prerequisites, but cycles must be detected. Observation 5: traces make recursive execution inspectable after the run by preserving node status, latency, tokens, errors, and stopping reasons.",
+    "reference": "Fixed chunking is reliable, semantic decomposition may improve boundaries, async execution helps network-bound workloads but adds complexity, dependency-aware scheduling respects prerequisites, and traces improve inspectability.",
+    "evaluation": "required_fact_coverage",
+    "required_facts": ["fixed chunking", "semantic decomposition", "malformed JSON", "async execution", "network-bound throughput", "dependency-aware scheduling", "cycles", "traces"],
+    "keywords": ["fixed", "semantic", "async", "network", "timeout", "traces"]
+  }
+]

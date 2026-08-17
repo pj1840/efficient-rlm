@@ -6,14 +6,20 @@ temperature: 0.2
 max_tokens: 800
 timeout_seconds: 60
 max_retries: 1
-execution_mode: parallel
+execution_mode: threaded
 workers: 4
+decomposer: fixed
+policy: deterministic
 chunk_size_words: 45
 min_chunk_words: 15
 max_depth: 3
 max_children: 16
 max_calls: 128
+max_wall_time_seconds: null
+max_prompt_tokens: null
+max_completion_tokens: null
+max_total_tokens: null
+complexity_threshold_words: 120
 enable_curriculum: false
 results_dir: results
 debug: false
-

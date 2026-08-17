@@ -9,8 +9,12 @@ class ConfigTests(unittest.TestCase):
     def test_config_loads_defaults(self):
         config = load_config("configs/default.yaml")
         self.assertEqual(config.provider, "mock")
-        self.assertEqual(config.execution_mode, "parallel")
+        self.assertEqual(config.execution_mode, "threaded")
         self.assertEqual(config.workers, 4)
+
+    def test_parallel_alias_maps_to_threaded(self):
+        config = load_config(None, execution_mode="parallel")
+        self.assertEqual(config.execution_mode, "threaded")
 
     def test_config_overrides(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -23,4 +27,3 @@ class ConfigTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

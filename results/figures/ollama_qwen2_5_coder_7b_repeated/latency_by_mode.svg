@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="460" viewBox="0 0 840 460">
+<rect width="100%" height="100%" fill="white"/>
+<text x="420.0" y="32.0" text-anchor="middle" font-size="18">Latency by Mode</text>
+<text x="25.0" y="230.0" text-anchor="middle" font-size="13">seconds</text>
+<line x1="72" y1="388" x2="768" y2="388" stroke="#333"/>
+<line x1="72" y1="72" x2="72" y2="388" stroke="#333"/>
+<rect x="98.4" y="174.6" width="86.3" height="213.4" fill="#4C78A8"/>
+<line x1="141.6" y1="72.0" x2="141.6" y2="277.2" stroke="#222"/>
+<line x1="136.6" y1="72.0" x2="146.6" y2="72.0" stroke="#222"/>
+<line x1="136.6" y1="277.2" x2="146.6" y2="277.2" stroke="#222"/>
+<text x="141.6" y="426.0" text-anchor="middle" font-size="11">adaptive</text>
+<text x="141.6" y="166.6" text-anchor="middle" font-size="11">17.9</text>
+<rect x="237.6" y="180.1" width="86.3" height="207.9" fill="#4C78A8"/>
+<line x1="280.8" y1="72.9" x2="280.8" y2="287.2" stroke="#222"/>
+<line x1="275.8" y1="72.9" x2="285.8" y2="72.9" stroke="#222"/>
+<line x1="275.8" y1="287.2" x2="285.8" y2="287.2" stroke="#222"/>
+<text x="280.8" y="426.0" text-anchor="middle" font-size="11">async</text>
+<text x="280.8" y="172.1" text-anchor="middle" font-size="11">17.5</text>
+<rect x="376.8" y="334.8" width="86.3" height="53.2" fill="#4C78A8"/>
+<line x1="420.0" y1="307.7" x2="420.0" y2="361.8" stroke="#222"/>
+<line x1="415.0" y1="307.7" x2="425.0" y2="307.7" stroke="#222"/>
+<line x1="415.0" y1="361.8" x2="425.0" y2="361.8" stroke="#222"/>
+<text x="420.0" y="426.0" text-anchor="middle" font-size="11">direct</text>
+<text x="420.0" y="326.8" text-anchor="middle" font-size="11">4.48</text>
+<rect x="516.0" y="220.4" width="86.3" height="167.6" fill="#4C78A8"/>
+<line x1="559.2" y1="159.7" x2="559.2" y2="281.1" stroke="#222"/>
+<line x1="554.2" y1="159.7" x2="564.2" y2="159.7" stroke="#222"/>
+<line x1="554.2" y1="281.1" x2="564.2" y2="281.1" stroke="#222"/>
+<text x="559.2" y="426.0" text-anchor="middle" font-size="11">sequential</text>
+<text x="559.2" y="212.4" text-anchor="middle" font-size="11">14.1</text>
+<rect x="655.2" y="193.9" width="86.3" height="194.1" fill="#4C78A8"/>
+<line x1="698.4" y1="98.4" x2="698.4" y2="289.4" stroke="#222"/>
+<line x1="693.4" y1="98.4" x2="703.4" y2="98.4" stroke="#222"/>
+<line x1="693.4" y1="289.4" x2="703.4" y2="289.4" stroke="#222"/>
+<text x="698.4" y="426.0" text-anchor="middle" font-size="11">threaded</text>
+<text x="698.4" y="185.9" text-anchor="middle" font-size="11">16.3</text>
+</svg>
