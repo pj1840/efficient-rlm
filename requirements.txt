@@ -1,0 +1,3 @@
+# Runtime dependencies are standard-library only.
+# For tests, install the package with: python -m pip install -e ".[dev]"
+

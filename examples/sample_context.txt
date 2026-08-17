@@ -1,0 +1,13 @@
+Artificial intelligence is transforming healthcare by improving diagnostics,
+speeding up medical imaging analysis, and helping doctors identify patterns in
+large patient datasets. In finance, AI is used for fraud detection,
+algorithmic trading, customer support, and risk assessment. In robotics, AI
+enables machines to perceive their surroundings, make decisions, and adapt to
+dynamic environments.
+
+At the same time, AI systems raise concerns about privacy, fairness,
+accountability, and the need for human oversight. In education, AI can
+personalize learning experiences and provide intelligent tutoring systems. In
+manufacturing, it supports predictive maintenance, quality control, and supply
+chain optimization.
+

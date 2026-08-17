@@ -1,0 +1,19 @@
+provider: mock
+model: mock-rlm
+endpoint: null
+api_key_env: RLM_API_KEY
+temperature: 0.2
+max_tokens: 800
+timeout_seconds: 60
+max_retries: 1
+execution_mode: parallel
+workers: 4
+chunk_size_words: 45
+min_chunk_words: 15
+max_depth: 3
+max_children: 16
+max_calls: 128
+enable_curriculum: false
+results_dir: results
+debug: false
+
