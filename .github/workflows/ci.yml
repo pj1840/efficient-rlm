@@ -34,4 +34,4 @@ jobs:
         run: python -m efficient_rlm --help
 
       - name: Trace HTML renderer smoke test
-        run: python scripts/render_trace_html.py results/traces/example.json --output /tmp/efficient_rlm_trace.html
+        run: python scripts/render_trace_html.py results/traces/ollama_recursive_demo.json --output /tmp/efficient_rlm_trace.html
